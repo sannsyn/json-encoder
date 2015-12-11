@@ -81,7 +81,21 @@ nullable =
 
 newtype Object a =
   Object (Op Builder a)
-  deriving (Contravariant, Divisible, Decidable)
+  deriving (Contravariant)
+
+instance Divisible Object where
+  conquer =
+    mempty
+  divide divisor (Object (Op producer1)) (Object (Op producer2)) =
+    Object $ Op $ 
+      divisor >>> \(input1, input2) ->
+      Builders.appendWithIncut (Builders.asciiChar ',') (producer1 input1) (producer2 input2)
+
+instance Decidable Object where
+  lose f =
+    Object (lose f)
+  choose f (Object op1) (Object op2) =
+    Object (choose f op1 op2)
 
 instance Monoid (Object a) where
   mempty =
