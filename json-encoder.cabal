@@ -3,10 +3,10 @@ name:
 version:
   0.1.2.2
 synopsis:
-  A very fast JSON encoder with a declarative DSL
+  A very fast single-pass JSON encoder with a declarative DSL
 description:
 category:
-  Data, XML, Parsing
+  JSON, Codec
 homepage:
   https://github.com/sannsyn/json-encoder 
 bug-reports:
