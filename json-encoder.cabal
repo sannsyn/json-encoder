@@ -1,7 +1,7 @@
 name:
   json-encoder
 version:
-  0.1.2.2
+  0.1.3
 synopsis:
   A very fast single-pass JSON encoder with a declarative DSL
 description:
