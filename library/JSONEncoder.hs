@@ -9,6 +9,7 @@ module JSONEncoder
   string,
   object,
   array,
+  nullable,
   -- * Object
   Object,
   field,
@@ -69,6 +70,10 @@ array (Array (Op sectionsProducer)) =
     sectionsProducer >>>
     mappend (Builders.asciiChar '[') >>>
     flip mappend (Builders.asciiChar ']')
+
+nullable :: Value a -> Value (Maybe a)
+nullable =
+  choose (maybe (Left ()) Right) null
 
 
 -- * Object
