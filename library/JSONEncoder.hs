@@ -32,7 +32,7 @@ run (Value (Op producer)) input =
 
 newtype Value a =
   Value (Op Builder a)
-  deriving (Contravariant)
+  deriving (Contravariant, Divisible, Decidable)
 
 null :: Value ()
 null =
@@ -76,7 +76,7 @@ array (Array (Op sectionsProducer)) =
 
 newtype Object a =
   Object (Op Builder a)
-  deriving (Contravariant, Divisible)
+  deriving (Contravariant, Divisible, Decidable)
 
 instance Monoid (Object a) where
   mempty =
