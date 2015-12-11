@@ -6,6 +6,7 @@ module JSONEncoder
   null,
   boolean,
   number_integral,
+  number_scientific,
   string,
   object,
   array,
@@ -22,6 +23,7 @@ where
 import JSONEncoder.Prelude hiding (length, null)
 import ByteString.TreeBuilder
 import qualified JSONEncoder.Builders as Builders
+import qualified Data.Scientific
 
 
 run :: Value a -> a -> Builder
@@ -51,6 +53,11 @@ number_integral :: Integral a => Value a
 number_integral =
   Value $ Op $
   fromString . show . toInteger
+
+number_scientific :: Value Data.Scientific.Scientific
+number_scientific =
+  Value $ Op $
+  fromString . show
 
 string :: Value Text
 string =
