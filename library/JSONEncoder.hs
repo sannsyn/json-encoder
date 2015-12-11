@@ -17,6 +17,10 @@ module JSONEncoder
   -- * Array
   Array,
   homo,
+  hetero,
+  -- * Hetero
+  Hetero,
+  element,
 )
 where
 
@@ -29,6 +33,7 @@ import qualified Data.Scientific
 run :: Value a -> a -> Builder
 run (Value (Op producer)) input =
   producer input
+
 
 -- * Value
 -------------------------
@@ -125,6 +130,8 @@ newtype Array a =
   Array (Op Builder a)
   deriving (Contravariant)
 
+-- |
+-- A homogenous array.
 homo :: (forall a. (a -> b -> a) -> a -> c -> a) -> Value b -> Array c
 homo foldl (Value (Op producer)) =
   Array (Op arrayProducer)
@@ -135,3 +142,42 @@ homo foldl (Value (Op producer)) =
         step acc =
           Builders.appendWithIncut (Builders.asciiChar ',') acc .
           producer
+
+-- |
+-- A heterogenous array encoder.
+hetero :: Hetero a -> Array a
+hetero (Hetero op) =
+  Array op
+
+
+-- * Hetero
+-------------------------
+
+newtype Hetero a =
+  Hetero (Op Builder a)
+  deriving (Contravariant)
+
+instance Divisible Hetero where
+  conquer =
+    mempty
+  divide divisor (Hetero (Op producer1)) (Hetero (Op producer2)) =
+    Hetero $ Op $ 
+      divisor >>> \(input1, input2) ->
+      Builders.appendWithIncut (Builders.asciiChar ',') (producer1 input1) (producer2 input2)
+
+instance Decidable Hetero where
+  lose f =
+    Hetero (lose f)
+  choose f (Hetero op1) (Hetero op2) =
+    Hetero (choose f op1 op2)
+
+instance Monoid (Hetero a) where
+  mempty =
+    Hetero (Op (const mempty))
+  mappend (Hetero (Op producer1)) (Hetero (Op producer2)) =
+    Hetero (Op (Builders.appendWithIncut (Builders.asciiChar ',') <$> producer1 <*> producer2))
+
+element :: Value a -> Hetero a
+element (Value op) =
+  Hetero op
+
