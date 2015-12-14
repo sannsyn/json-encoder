@@ -17,7 +17,7 @@ appendWithIncut incut a b =
   if length a == 0
     then b
     else if length b == 0
-      then mempty
+      then a
       else a <> incut <> b
 
 {-# INLINE asciiChar #-}
