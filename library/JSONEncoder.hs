@@ -25,12 +25,12 @@ module JSONEncoder
 where
 
 import JSONEncoder.Prelude hiding (length, null)
-import ByteString.TreeBuilder
+import qualified ByteString.TreeBuilder as Builders
 import qualified JSONEncoder.Builders as Builders
 import qualified Data.Scientific
 
 
-run :: Value a -> a -> Builder
+run :: Value a -> a -> Builders.Builder
 run (Value (Op producer)) input =
   producer input
 
@@ -39,7 +39,7 @@ run (Value (Op producer)) input =
 -------------------------
 
 newtype Value a =
-  Value (Op Builder a)
+  Value (Op Builders.Builder a)
   deriving (Contravariant, Divisible, Decidable)
 
 null :: Value ()
@@ -57,7 +57,7 @@ boolean =
 number_integral :: Integral a => Value a
 number_integral =
   Value $ Op $
-  fromString . show . toInteger
+  Builders.asciiIntegral
 
 number_scientific :: Value Data.Scientific.Scientific
 number_scientific =
@@ -92,7 +92,7 @@ nullable =
 -------------------------
 
 newtype Object a =
-  Object (Op Builder a)
+  Object (Op Builders.Builder a)
   deriving (Contravariant)
 
 instance Divisible Object where
@@ -129,7 +129,7 @@ field name (Value (Op producer)) =
 -------------------------
 
 newtype Array a =
-  Array (Op Builder a)
+  Array (Op Builders.Builder a)
   deriving (Contravariant)
 
 -- |
@@ -156,7 +156,7 @@ hetero (Hetero op) =
 -------------------------
 
 newtype Hetero a =
-  Hetero (Op Builder a)
+  Hetero (Op Builders.Builder a)
   deriving (Contravariant)
 
 instance Divisible Hetero where

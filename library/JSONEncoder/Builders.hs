@@ -2,7 +2,6 @@ module JSONEncoder.Builders where
 
 import JSONEncoder.Prelude hiding (length)
 import ByteString.TreeBuilder
-import qualified JSONEncoder.ByteStrings as ByteStrings
 import qualified Data.Text
 
 
@@ -19,16 +18,6 @@ appendWithIncut incut a b =
     else if length b == 0
       then a
       else a <> incut <> b
-
-{-# INLINE asciiChar #-}
-asciiChar :: Char -> Builder
-asciiChar =
-  byte . fromIntegral . ord
-
-{-# INLINE utf8Char #-}
-utf8Char :: Char -> Builder
-utf8Char =
-  byteString . ByteStrings.utf8Char
 
 {-# INLINABLE stringEncodedChar #-}
 stringEncodedChar :: Char -> Builder

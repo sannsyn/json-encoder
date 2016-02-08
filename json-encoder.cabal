@@ -1,7 +1,7 @@
 name:
   json-encoder
 version:
-  0.1.4
+  0.1.5
 synopsis:
   A direct-to-bytes single-pass JSON encoder with a declarative DSL
 description:
@@ -44,14 +44,13 @@ library
   other-modules:
     JSONEncoder.Prelude
     JSONEncoder.Builders
-    JSONEncoder.ByteStrings
   exposed-modules:
     JSONEncoder
   build-depends:
     --
     text == 1.*,
     bytestring >= 0.10 && < 0.11,
-    bytestring-tree-builder >= 0.2.2.1 && < 0.3,
+    bytestring-tree-builder >= 0.2.4 && < 0.3,
     scientific >= 0.3 && < 0.4,
     --
     contravariant-extras == 0.3.*,
