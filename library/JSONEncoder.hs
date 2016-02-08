@@ -115,6 +115,8 @@ instance Monoid (Object a) where
   mappend (Object (Op producer1)) (Object (Op producer2)) =
     Object (Op (Builders.appendWithIncut (Builders.asciiChar ',') <$> producer1 <*> producer2))
 
+instance Semigroup (Object a)
+
 field :: Text -> Value a -> Object a
 field name (Value (Op producer)) =
   Object $ Op $ 
@@ -176,6 +178,8 @@ instance Monoid (Hetero a) where
     Hetero (Op (const mempty))
   mappend (Hetero (Op producer1)) (Hetero (Op producer2)) =
     Hetero (Op (Builders.appendWithIncut (Builders.asciiChar ',') <$> producer1 <*> producer2))
+
+instance Semigroup (Hetero a)
 
 element :: Value a -> Hetero a
 element (Value op) =
