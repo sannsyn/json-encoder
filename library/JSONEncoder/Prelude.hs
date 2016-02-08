@@ -4,10 +4,6 @@ module JSONEncoder.Prelude
 )
 where
 
--- base
--------------------------
-import Numeric as Exports
-
 -- base-prelude
 -------------------------
 import BasePrelude as Exports hiding (fail, Alt)
