@@ -28,6 +28,8 @@ stringEncodedChar =
     '\n' -> "\\n"
     '\r' -> "\\r"
     '\t' -> "\\t"
+    '\b' -> "\\b"
+    '\f' -> "\\f"
     char -> encodedChar char
 
 {-# INLINABLE encodedChar #-}
