@@ -14,6 +14,7 @@ module JSONEncoder
   -- * Object
   Object,
   field,
+  row,
   -- * Array
   Array,
   homo,
@@ -123,6 +124,15 @@ field name (Value (Op producer)) =
     producer >>>
     mappend (Builders.asciiChar ':') >>>
     mappend (Builders.stringLiteral name)
+
+row :: Value a -> Object (Text, a)
+row (Value (Op valueProducer)) =
+  Object (Op producer)
+  where
+    producer (key, value) =
+      Builders.stringLiteral key <>
+      Builders.asciiChar ':' <>
+      valueProducer value
 
 
 -- * Array
